@@ -2,9 +2,9 @@
 
 This repository contains my solution for the Pesapal Developer '26 Challenge.  
 It demonstrates a simple RDBMS with CRUD operations and a trivial web app using Python and Flask.
-The database engine allows for simple SQL statements such as **SELECT, INSERT, UPDATE, DELETE and JOIN**. Other operations such as aggregations, GROUP BY, ORDER BY etc. are unavailable. 
+The database engine allows for simple SQL statements such as **SELECT, INSERT, UPDATE, DELETE and JOIN**. Other operations such as aggregations, GROUP BY, ORDER BY etc. are unavailable.
 
-Please use the Code mode on Github for README.md to visualise the structure correctly.  
+Please use the Code mode on Github for README.md to visualise the structure correctly.
 
 ---
 
@@ -24,6 +24,7 @@ Please use the Code mode on Github for README.md to visualise the structure corr
 - **Flask Demo**
   - Simple web app demonstrating CRUD operations
     - python app.py
+
 ---
 
 ## Requirements
@@ -33,7 +34,8 @@ Please use the Code mode on Github for README.md to visualise the structure corr
 - (Optional) Virtual environment for package isolation and seamless running of the web app via python app.py
 
 **Install dependencies:**
-```bash
+
+````bash
 pip install -r requirements.txt
 
 ## How to Test
@@ -43,9 +45,7 @@ python repl.py
 ### Web Demo
 ``` bash
 python app.py
-Optioal: activate virtual environment then run app.py
-``` bash
-pesaenv/Scripts/activate
+
 
 **Constraints**
 1. Primary keys autoincrement and remains unique
@@ -116,3 +116,4 @@ DELETE FROM Transactions WHERE merchant_id=2;
 -- Delete the merchant
 DELETE FROM Merchants WHERE merchant_id=2;
 This code also deletes the transactions - db engine configuration
+````
