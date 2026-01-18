@@ -16,6 +16,12 @@
       "payment_method": "TEXT"
     },
     "rows": [],
-    "indexes": {}
+    "indexes": {
+      "merchant_id": {
+        "1": 4,
+        "2": 8,
+        "3": 7
+      }
+    }
   }
 }

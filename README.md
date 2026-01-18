@@ -8,6 +8,10 @@ Please use the Code mode on Github for README.md to visualise the structure corr
 
 ---
 
+Please check the short video files **docs/app_repl.mp4** and **docs/repl_guide.mp4** for a headstart into running the project (repl.py and app.py)
+
+---
+
 ## Features
 
 - **Custom RDBMS**
@@ -115,5 +119,5 @@ DELETE FROM Transactions WHERE merchant_id=2;
 
 -- Delete the merchant
 DELETE FROM Merchants WHERE merchant_id=2;
-This code also deletes the transactions - db engine configuration
+As per the db egine configuration's, this code deletes both the merchant and corresponding transactions
 ````
