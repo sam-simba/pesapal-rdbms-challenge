@@ -50,7 +50,6 @@ class DatabaseEngine:
             matched = False
             for rrow in right_rows:
                 if lrow[left_key] == rrow[right_key]:
-                    # Prefix columns with table names to avoid collisions
                     combined = {f"{left_table}.{k}": v for k, v in lrow.items()}
                     combined.update({f"{right_table}.{k}": v for k, v in rrow.items()})
                     result.append(combined)
@@ -58,7 +57,6 @@ class DatabaseEngine:
 
             if not matched:
                 combined = {f"{left_table}.{k}": v for k, v in lrow.items()}
-                # Add right table columns as None
                 for col in self.tables[right_table].columns:
                     combined[f"{right_table}.{col}"] = None
                 result.append(combined)
@@ -70,11 +68,9 @@ class DatabaseEngine:
             return f"Table {table_name} does not exist"
         
         table = self.tables[table_name]
-        # Assuming the Table class has an `indexes` attribute
         return table.indexes
 
     def create_default_tables(self):
-        # Merchants table
         merchants_columns = {
             "merchant_id": "INT",
             "name": "TEXT",
@@ -82,7 +78,6 @@ class DatabaseEngine:
         }
         self.tables["Merchants"] = Table("Merchants", merchants_columns)
 
-        # Transactions table
         transactions_columns = {
             "transaction_id": "INT",
             "merchant_id": "INT",
@@ -93,7 +88,6 @@ class DatabaseEngine:
 
 
     def execute(self, command: str):
-        # Very basic parser placeholder for demo
         tokens = command.strip().split()
         if len(tokens) == 0:
             return "No command entered"
@@ -103,7 +97,6 @@ class DatabaseEngine:
 
         # CREATE INDEX support
         if cmd == "CREATE" and len(tokens) > 1 and tokens[1].upper() == "INDEX":
-            # Expecting: CREATE INDEX index_name ON TableName (column_name)
             tokens_upper = [t.upper() for t in tokens]
 
             if "ON" not in tokens_upper:
@@ -117,7 +110,6 @@ class DatabaseEngine:
             if table_name not in self.tables:
                 return f"Table {table_name} does not exist"
 
-            # Extract column from parentheses
             start = command.find("(")
             end = command.find(")")
             if start == -1 or end == -1:
@@ -163,16 +155,15 @@ class DatabaseEngine:
                     return "Syntax error: missing ON clause"
 
                 on_index = tokens_upper.index("ON")
-                on_clause = " ".join(tokens[on_index + 1:])  # everything after ON
+                on_clause = " ".join(tokens[on_index + 1:])  
                 
                 try:
                     left_key_raw, right_key_raw = [x.strip() for x in on_clause.split("=")]
-                    left_key = left_key_raw.split(".")[-1]  # remove table prefix
+                    left_key = left_key_raw.split(".")[-1]  
                     right_key = right_key_raw.split(".")[-1]
                 except:
                     return "Syntax error in ON clause"
 
-                # Call your existing left_join method
                 return self.left_join(left_table, right_table, left_key, right_key)
 
             # WHERE support
@@ -209,33 +200,28 @@ class DatabaseEngine:
             if table_name not in self.tables:
                 return f"Table {table_name} does not exist"
 
-            # Get values inside parentheses
             start = command.find("(")
             end = command.find(")")
             if start == -1 or end == -1:
                 return "Syntax error: missing parentheses"
 
             values_str = command[start+1:end]
-            # Split by comma and strip spaces/quotes
             user_values = [v.strip().strip('"').strip("'") for v in values_str.split(",")]
 
             # Get table
             table = self.tables[table_name]
 
-            # Auto-increment ID for the first column
             id_col_index = 0
             if table.rows:
                 next_id = max(row[id_col_index] for row in table.rows) + 1
             else:
                 next_id = 1
 
-            # Make sure number of user values matches remaining columns
             if len(user_values) != len(table.columns) - 1:
                 return f"Error: expected {len(table.columns)-1} values, got {len(user_values)}"
 
-            # Prepare converted values
-            converted_values = [next_id]  # first column is ID
-            for i, (col_name, col_type) in enumerate(list(table.columns.items())[1:]):  # skip first column
+            converted_values = [next_id] 
+            for i, (col_name, col_type) in enumerate(list(table.columns.items())[1:]):  
                 value = user_values[i]
                 if col_type == "INT":
                     value = int(value)
@@ -248,13 +234,10 @@ class DatabaseEngine:
                 if any(r[email_index] == converted_values[email_index] for r in table.rows):
                     return f"Error: email '{converted_values[email_index]}' already exists"
             
-            # After preparing converted_values but before inserting
             if table_name == "Transactions":
-                # Find the merchant_id column in Transactions
                 merchant_id_index = list(table.columns.keys()).index("merchant_id")
                 merchant_id_value = converted_values[merchant_id_index]
 
-                # Check if this merchant exists
                 merchant_table = self.tables.get("Merchants")
                 merchant_exists = any(
                     r[list(merchant_table.columns.keys()).index("merchant_id")] == merchant_id_value
@@ -278,22 +261,18 @@ class DatabaseEngine:
             if table_name not in self.tables:
                 return f"Table {table_name} does not exist"
 
-            # Use uppercase only to detect keywords
             command_upper = command.upper()
             if "SET" not in command_upper or "WHERE" not in command_upper:
                 return "Syntax error: missing SET or WHERE"
 
-            # Extract SET and WHERE parts preserving original case for values
             set_part = command[command_upper.find("SET")+3 : command_upper.find("WHERE")].strip()
             where_part = command[command_upper.find("WHERE")+5 : ].strip().rstrip(";")
 
-            # Parse SET clause
             if "=" not in set_part:
                 return "Syntax error in SET clause"
             col_name, new_value = [x.strip() for x in set_part.split("=")]
             new_value = new_value.strip('"').strip("'")
 
-            # Parse WHERE clause (only supports equality)
             if "=" not in where_part:
                 return "Syntax error in WHERE clause"
             where_col, where_val = [x.strip() for x in where_part.split("=")]
@@ -302,12 +281,10 @@ class DatabaseEngine:
             # Find the table
             table = self.tables[table_name]
 
-            # Update rows
             count = 0
             for i, row in enumerate(table.rows):
                 row_dict = {col: val for col, val in zip(table.columns.keys(), row)}
                 
-                # Convert where_val to the proper type based on the column
                 col_index = list(table.columns.keys()).index(where_col)
                 col_type = list(table.columns.values())[col_index]
                 if col_type == "INT":
@@ -320,7 +297,6 @@ class DatabaseEngine:
                 col_names = list(table.columns.keys())
                 col_index_where = col_names.index(where_col)
                 if row[col_index_where] == where_val_converted:
-                    # Update the correct column
                     col_index = list(table.columns.keys()).index(col_name)
                     col_type = list(table.columns.values())[col_index]
                     if col_type == "INT":
@@ -339,7 +315,7 @@ class DatabaseEngine:
         
         # DELETE support
         if cmd == "DELETE":
-            table_name = tokens[2]  # DELETE FROM TableName ...
+            table_name = tokens[2] 
             if table_name not in self.tables:
                 return f"Table {table_name} does not exist"
 
@@ -347,7 +323,6 @@ class DatabaseEngine:
             if "WHERE" not in command_upper:
                 return "Syntax error: missing WHERE clause"
 
-            # Extract WHERE clause preserving original case
             where_part = command[command_upper.find("WHERE")+5 : ].strip().rstrip(";")
 
             if "=" not in where_part:
@@ -359,7 +334,6 @@ class DatabaseEngine:
             # Find the table
             table = self.tables[table_name]
 
-            # Convert WHERE value to proper type
             col_index = list(table.columns.keys()).index(where_col)
             col_type = list(table.columns.values())[col_index]
             if col_type == "INT":
@@ -369,7 +343,7 @@ class DatabaseEngine:
             else:
                 where_val_converted = where_val
 
-            # Cascade delete if deleting a Merchant
+            # Cascade delete if deleting a merhcant
             if table_name == "Merchants" and where_col == "merchant_id":
                 # First delete all transactions for this merchant
                 trans_table = self.tables.get("Transactions")
@@ -378,7 +352,6 @@ class DatabaseEngine:
                         r for r in trans_table.rows if r[list(trans_table.columns.keys()).index("merchant_id")] != where_val_converted
                     ]
 
-            # Delete rows from the target table
             original_count = len(table.rows)
             table.rows = [r for r in table.rows if r[col_index] != where_val_converted]
             deleted_count = original_count - len(table.rows)

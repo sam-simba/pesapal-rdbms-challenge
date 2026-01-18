@@ -10,7 +10,6 @@ def index():
     transactions = db.execute("SELECT * FROM Transactions")
     return render_template('index.html', merchants=merchants, transactions=transactions)
 
-# Add merchant
 @app.route('/add_merchant', methods=['GET', 'POST'])
 def add_merchant():
     if request.method == 'POST':
@@ -22,7 +21,6 @@ def add_merchant():
         return redirect(url_for('index'))
     return render_template('add.html', type='Merchant')
 
-# Add transaction
 @app.route('/add_transaction', methods=['GET', 'POST'])
 def add_transaction():
     if request.method == 'POST':

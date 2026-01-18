@@ -1,3 +1,5 @@
+Please view in Github in code mode
+
 PesaMerchants/
 ├── app.py . . . . . . . . . . . # Flask web application entry point
 ├── repl.py . . . . . . . . . . .# Mini-RDBMS REPL and DatabaseEngine
@@ -10,5 +12,3 @@ PesaMerchants/
 ├── static/ . . . . . . . . . . .# CSS styling
 │ └── style.css
 └── design.md . . . . . . . . . .# project design overview
-
-Open Webapp: python app.py
