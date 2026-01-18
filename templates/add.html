@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Add {{ type }}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <h2 style="text-align: center">Add {{ type }}</h2>
+
+    <div class="form-container">
+      <form method="post">
+        {% if type == "Merchant" %}
+        <label>Name</label>
+        <input type="text" name="name" required />
+
+        <label>Email</label>
+        <input type="email" name="email" required />
+
+        {% elif type == "Transaction" %}
+        <label>Merchant ID</label>
+        <input type="number" name="merchant_id" required />
+
+        <label>Amount</label>
+        <input type="number" step="0.01" name="amount" required />
+
+        <label>Payment Method</label>
+        <input type="text" name="payment_method" required />
+        {% endif %}
+
+        <button type="submit">Save {{ type }}</button>
+      </form>
+
+      <div style="text-align: center; margin-top: 15px">
+        <a href="{{ url_for('index') }}">⬅ Back to Dashboard</a>
+      </div>
+    </div>
+  </body>
+</html>

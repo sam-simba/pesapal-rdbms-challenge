@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Merchants WebApp</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <!-- MERCHANTS SECTION -->
+    <h2 style="text-align: center">Merchants</h2>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Merchant ID</th>
+            <th>Name</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in merchants %}
+          <tr>
+            <td>{{ row.merchant_id }}</td>
+            <td>{{ row.name }}</td>
+            <td>{{ row.email }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div style="text-align: center; margin-top: 10px">
+      <a href="{{ url_for('add_merchant') }}">➕ Add Merchant</a>
+    </div>
+
+    <!-- TRANSACTIONS SECTION -->
+    <h2 style="text-align: center; margin-top: 50px">Transactions</h2>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Transaction ID</th>
+            <th>Merchant ID</th>
+            <th>Amount</th>
+            <th>Payment Method</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in transactions %}
+          <tr>
+            <td>{{ row.transaction_id }}</td>
+            <td>{{ row.merchant_id }}</td>
+            <td>{{ row.amount }}</td>
+            <td>{{ row.payment_method }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div style="text-align: center; margin-top: 10px">
+      <a href="{{ url_for('add_transaction') }}">➕ Add Transaction</a>
+    </div>
+  </body>
+</html>
