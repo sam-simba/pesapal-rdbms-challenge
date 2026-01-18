@@ -2,7 +2,9 @@
 
 This repository contains my solution for the Pesapal Developer '26 Challenge.  
 It demonstrates a simple RDBMS with CRUD operations and a trivial web app using Python and Flask.
-The database engine allows for simple SQL statements such as SELECT, INSERT, UPDATE, AND DELETE. Other operations such as aggregations, GROUP BY, ORDER BY etc. are unavailable. 
+The database engine allows for simple SQL statements such as **SELECT, INSERT, UPDATE, DELETE and JOIN**. Other operations such as aggregations, GROUP BY, ORDER BY etc. are unavailable. 
+
+Please use the Code mode on Github for README.md to visualise the structure correctly.  
 
 ---
 
@@ -28,17 +30,33 @@ The database engine allows for simple SQL statements such as SELECT, INSERT, UPD
 
 - Python 3.10+
 - Flask
-- (Optional) Virtual environment for package isolation
+- (Optional) Virtual environment for package isolation and seamless running of the web app via python app.py
 
 **Install dependencies:**
 ```bash
 pip install -r requirements.txt
 
+## How to Test
+### REPL
+python repl.py
+
+### Web Demo
+``` bash
+python app.py
+Optioal: activate virtual environment then run app.py
+``` bash
+pesaenv/Scripts/activate
+
+**Constraints**
+1. Primary keys autoincrement and remains unique
+2. Emails must be unique.
+3. Transactions can only post if the the merchant with the merchant_id exists.
+4. Database engine configuration: Deleting a merchant deletes all corresponding transactions.
+5. Only "SELECT *" statement function available for this project.
 
 
-
-**Getting Started** 
--- Adding Records - keys autoincrement, emails must be unique, and transactions can only POST if the merchant with the merchant_id exists. 
+**Getting Started**
+-- Please copy the insert statements in one go and paste them in REPL
 ****************************************
 INSERT INTO Merchants VALUES ("Sami Wachira", "s_wachira@pesapal.com");
 INSERT INTO Merchants VALUES ("Lucy Maimuna", "l_maimuna@pesapal.com");
@@ -71,7 +89,7 @@ SELECT * FROM Merchants LEFT JOIN Transactions ON Merchants.merchant_id = Transa
 
 --Update a record from each table
 ***************************************
-UPDATE Merchants SET email="sami.wachira@pesapal.com" WHERE merchant_id=1;
+UPDATE Merchants SET email="sami.wac@pesapal.com" WHERE merchant_id=1;
 UPDATE Transactions SET amount=899999 WHERE transaction_id=3;
 
 
@@ -97,4 +115,4 @@ DELETE FROM Transactions WHERE merchant_id=2;
 
 -- Delete the merchant
 DELETE FROM Merchants WHERE merchant_id=2;
-
+This code also deletes the transactions - db engine configuration
