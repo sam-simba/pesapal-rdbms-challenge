@@ -30,15 +30,14 @@ The database engine allows for simple SQL statements such as SELECT, INSERT, UPD
 - Flask
 - (Optional) Virtual environment for package isolation
 
-Install dependencies:
-
+**Install dependencies:**
 ```bash
 pip install -r requirements.txt
 
 
 
 
-**Getting Started**
+**Getting Started** 
 -- Adding Records - keys autoincrement, emails must be unique, and transactions can only POST if the merchant with the merchant_id exists. 
 ****************************************
 INSERT INTO Merchants VALUES ("Sami Wachira", "s_wachira@pesapal.com");
@@ -84,14 +83,8 @@ SELECT * FROM Transactions;
 
 -- Delete record in Transactions table
 ****************************************
--- Count before deleting
-SELECT COUNT(*) AS Total_Transactions FROM Transactions;
-
 -- Delete the transaction
 DELETE FROM Transactions WHERE transaction_id=8;
-
--- Count after deleting
-SELECT COUNT(*) AS New_Total_Transactions FROM Transactions;
 
 -- Show all remaining transactions
 SELECT * FROM Transactions;
